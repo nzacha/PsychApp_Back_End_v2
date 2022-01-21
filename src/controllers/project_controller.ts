@@ -52,21 +52,20 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
                         model: Models.Question_Option, 
                     }
                 }],
-                order: [
-                    [{ model: Models.Quiz_Section as 'quiz_sections'}, 'section_id', 'DESC'],
-                    [{ model: Models.Quiz_Section as 'quiz_sections' }, { model: Models.Quiz_Question as 'quiz_questions' }, 'question_id', 'DESC'],
-                    [{ model: Models.Quiz_Section as 'quiz_sections' }, { model: Models.Quiz_Question as 'quiz_questions' }, { model: Models.Question_Option as 'question_options' }, 'question_option_id', 'DESC']
-                ],
+                // order: [
+                //     [{ model: Models.Quiz_Section as 'quiz_sections'}, 'section_id', 'DESC'],
+                //     [{ model: Models.Quiz_Section as 'quiz_sections' }, { model: Models.Quiz_Question as 'quiz_questions' }, 'question_id', 'DESC'],
+                //     [{ model: Models.Quiz_Section as 'quiz_sections' }, { model: Models.Quiz_Question as 'quiz_questions' }, { model: Models.Question_Option as 'question_options' }, 'question_option_id', 'DESC']
+                // ],
             }]
         })
-        // quiz.quiz_sections.sort((a: any, b: any) => {return a.section_id - b.section_id});
-        // for(let quiz_section of quiz.quiz_sections){
-        //     quiz_section.quiz_questions.sort((a: any, b: any) => {return a.question_id - b.question_id});
-        //     for(let quiz_question of quiz_section.quiz_questions){
-        //         quiz_question.question_options.sort((a: any, b: any) => {return a.option_id - b.option_id});
-        //     }
-        // }
-        console.log(JSON.stringify(quiz.dataValues));
+        quiz.quiz_sections.sort((a: any, b: any) => {return a.section_id - b.section_id});
+        for(let quiz_section of quiz.quiz_sections){
+            quiz_section.quiz_questions.sort((a: any, b: any) => {return a.question_id - b.question_id});
+            for(let quiz_question of quiz_section.quiz_questions){
+                quiz_question.question_options.sort((a: any, b: any) => {return a.option_id - b.option_id});
+            }
+        }
         // const projects = await Models.Project.getProjects({include: [{model: Models.User, as: 'director'}, {model: Models.Quiz, include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question}]}]}]});
         response.status(200).json(newDetailedResponse(request.params, request.body, quiz, 'Project Active Quiz Fetched Successfully'));
     }catch(error: any){
