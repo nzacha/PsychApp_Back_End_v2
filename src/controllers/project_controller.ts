@@ -62,7 +62,7 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
                 quiz_question.question_options.sort((a: any, b: any) => {return a.option_id - b.option_id});
             }
         }
-        
+        console.log(quiz);
         // const projects = await Models.Project.getProjects({include: [{model: Models.User, as: 'director'}, {model: Models.Quiz, include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question}]}]}]});
         response.status(200).json(newDetailedResponse(request.params, request.body, quiz, 'Project Active Quiz Fetched Successfully'));
     }catch(error: any){
