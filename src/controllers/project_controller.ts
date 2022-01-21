@@ -66,9 +66,7 @@ export async function createProject(request: express.Request, response: express.
         }
         await Models.Project_User_Link.create({user_id: director_id, project_id: project.project_id});
         const quiz = await Models.Quiz.create({project_id: project.project_id, name: 'New Quiz'});
-        
-
-
+        if(!project.active_quiz_id) await project.update({active_quiz_id: quiz.quiz_id});
         response.status(200).json(newDetailedResponse(request.params, request.body, project, 'Project Active Quiz Fetched Successfully'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));
