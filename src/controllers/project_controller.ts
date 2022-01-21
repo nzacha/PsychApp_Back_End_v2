@@ -53,9 +53,9 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
                     }
                 }],
                 order: [
-                    [{ model: Models.Quiz_Section}, 'section_id', 'DESC'],
-                    [{ model: Models.Quiz_Section}, { model: Models.Quiz_Question}, 'question_id', 'DESC'],
-                    [{ model: Models.Quiz_Section}, { model: Models.Quiz_Question}, { model: Models.Question_Option}, 'question_option_id', 'DESC']
+                    [{ model: Models.Quiz_Section as 'quiz_sections'}, 'section_id', 'DESC'],
+                    [{ model: Models.Quiz_Section as 'quiz_sections' }, { model: Models.Quiz_Question as 'quiz_questions' }, 'question_id', 'DESC'],
+                    [{ model: Models.Quiz_Section as 'quiz_sections' }, { model: Models.Quiz_Question as 'quiz_questions' }, { model: Models.Question_Option as 'question_options' }, 'question_option_id', 'DESC']
                 ],
             }]
         })
