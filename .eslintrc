@@ -1,0 +1,35 @@
+{
+    "extends": [
+      "typescript",
+      "typescript/react",
+      "typescript/prettier-react"
+    ],
+    "plugins": ["filenames", "jest"],
+    "env": {    
+      "jest": true,
+      "node": true
+    },
+    "rules": {
+      "filenames/no-index": "error",
+      "filenames/match-exported": ["error", "kebab"],
+      "jest/no-disabled-tests": "error",
+      "jest/no-focused-tests": "error",
+      "jest/no-identical-title": "error",
+      "jest/valid-expect": "error",
+      "prettier/prettier": [
+        "error",
+        {
+          "semi": false,
+          "tabWidth": 4,
+          "singleQuote": true
+        }
+      ],
+      "quotes": ["error", "single"],
+      // we want to force semicolons
+      "semi": ["error", "always"],
+      // we use 2 spaces to indent our code
+      "indent": ["error", 2],
+      // we want to avoid extraneous spaces
+      "no-multi-spaces": ["error"]
+    }
+  }
