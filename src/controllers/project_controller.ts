@@ -42,7 +42,26 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
             response.status(404).json(newErrorResponse('No Active Quiz'));
             return;
         }
-        const quiz = await Models.Quiz.findOne({where: {quiz_id: project.active_quiz_id}, include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question, include: {model: Models.Question_Option, order: [[Models.Question_Option, 'question_option_id', 'ASC']]}, order: [[{model: Models.Quiz_Question}, 'question_id', 'ASC']]}]}]})
+        const quiz = await Models.Quiz.findOne({
+            where: {quiz_id: project.active_quiz_id}, 
+            include: [{
+                model: Models.Quiz_Section, 
+                include: [{
+                    model: Models.Quiz_Question, 
+                    include: {
+                        model: Models.Question_Option, 
+                        order: [[
+                            Models.Question_Option, 'question_option_id', 'ASC'
+                        ]]
+                    }, 
+                    order: [[
+                        {
+                            model: Models.Quiz_Question
+                        }, 'question_id', 'ASC'
+                    ]]
+                }]
+            }]
+        })
         
         // const projects = await Models.Project.getProjects({include: [{model: Models.User, as: 'director'}, {model: Models.Quiz, include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question}]}]}]});
         response.status(200).json(newDetailedResponse(request.params, request.body, quiz, 'Project Active Quiz Fetched Successfully'));
