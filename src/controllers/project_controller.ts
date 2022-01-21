@@ -50,15 +50,13 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
                     model: Models.Quiz_Question, 
                     include: {
                         model: Models.Question_Option, 
-                        order: [[
-                            Models.Question_Option, 'question_option_id', 'ASC'
-                        ]]
+                        order: [
+                            [Models.Question_Option, 'question_option_id', 'asc']
+                        ]
                     }, 
-                    order: [[
-                        {
-                            model: Models.Quiz_Question
-                        }, 'question_id', 'ASC'
-                    ]]
+                    order: [
+                        [Models.Quiz_Question, 'question_id', 'asc']
+                    ]
                 }]
             }]
         })
