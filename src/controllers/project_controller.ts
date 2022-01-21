@@ -1,6 +1,7 @@
 import express from 'express'
 import Models from '../models'
 import { ERROR_OCCURRED, newDetailedResponse, newErrorResponse, newResponse } from  '../config/response'
+import { Model } from 'sequelize/types';
 
 export async function listProjectsByUserId(request: express.Request, response: express.Response){
     try{
@@ -52,10 +53,9 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
                     }
                 }],
                 order: [
-                    'quiz_sections.section_id',
-                    'quiz_sections.quiz_questions.question_id',
-                    'quiz_sections.quiz_questions.question_options.question_option_id', 
-                    'DESC'
+                    [{ model: Models.Quiz_Section as 'quiz_sections'}, 'section_id', 'DESC'],
+                    [{ model: Models.Quiz_Section as 'quiz_sections' }, { model: Models.Quiz_Question as 'quiz_questions' }, 'question_id', 'DESC'],
+                    [{ model: Models.Quiz_Section as 'quiz_sections' }, { model: Models.Quiz_Question as 'quiz_questions' }, { model: Models.Question_Option as 'question_options' }, 'question_option_id', 'DESC']
                 ],
             }]
         })
