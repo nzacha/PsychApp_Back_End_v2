@@ -52,9 +52,10 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
                     }
                 }],
                 order: [
-                    ['quiz_sections.section_id', 'desc'],
-                    ['quiz_sections.quiz_questions.question_id', 'desc'],
-                    ['quiz_sections.quiz_questions.question_options.question_option_id', 'DESC']
+                    'quiz_sections.section_id',
+                    'quiz_sections.quiz_questions.question_id',
+                    'quiz_sections.quiz_questions.question_options.question_option_id', 
+                    'DESC'
                 ],
             }]
         })
