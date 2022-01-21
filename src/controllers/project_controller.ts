@@ -55,7 +55,7 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
                 order: [
                     // [{ model: Models.Quiz_Section }, 'section_id', 'desc'],
                     // [{ model: Models.Quiz_Section }, { model: Models.Quiz_Question }, 'question_id', 'desc'],
-                    [{ model: Models.Quiz_Section }, { model: Models.Quiz_Question }, { model: Models.Question_Option }, 'question_option_id', 'desc']
+                    [Models.Quiz_Section, Models.Quiz_Question, Models.Question_Option, 'question_option_id', 'DESC']
                 ],
             }]
         })
