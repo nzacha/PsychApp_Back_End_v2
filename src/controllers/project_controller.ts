@@ -46,17 +46,17 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
             where: {quiz_id: project.active_quiz_id}, 
             include: [{
                 model: Models.Quiz_Section, 
-                order: [
-                    [{ model: Models.Quiz_Section }, 'section_id', 'desc'],
-                    [{ model: Models.Quiz_Section }, { model: Models.Quiz_Question }, 'question_id', 'desc'],
-                    [{ model: Models.Quiz_Section }, { model: Models.Quiz_Question }, { model: Models.Question_Option }, 'question_option_id', 'desc']
-                ],
                 include: [{
                     model: Models.Quiz_Question, 
                     include: {
                         model: Models.Question_Option, 
                     }
-                }]
+                }],
+                order: [
+                    // [{ model: Models.Quiz_Section }, 'section_id', 'desc'],
+                    // [{ model: Models.Quiz_Section }, { model: Models.Quiz_Question }, 'question_id', 'desc'],
+                    [{ model: Models.Quiz_Section }, { model: Models.Quiz_Question }, { model: Models.Question_Option }, 'question_option_id', 'desc']
+                ],
             }]
         })
         
