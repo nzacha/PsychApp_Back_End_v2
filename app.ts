@@ -104,7 +104,8 @@ db.connect(async (err) => {
         process.exit(1);
     }else{
         await configureDB(FIRST_BOOT, false)
-
+        console.log(FIRST_BOOT);
+        
         app.listen(port, () => {
             console.log(`App is listening at http://localhost:${port}`);
         });
