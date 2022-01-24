@@ -39,6 +39,8 @@ export default (sequelize: Sequelize.Sequelize) => {
         }
     }, {
         sequelize,
+        charset: 'utf8',
+        collate: 'utf8_unicode_ci',
         modelName: 'quiz_question'});
     return Model 
 }

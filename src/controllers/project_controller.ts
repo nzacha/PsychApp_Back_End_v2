@@ -59,14 +59,6 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
                 // ],
             }]
         })
-        quiz.quiz_sections.sort((a: any, b: any) => {return a.section_id - b.section_id});
-        for(let quiz_section of quiz.quiz_sections){
-            quiz_section.quiz_questions.sort((a: any, b: any) => {return a.question_id - b.question_id});
-            for(let quiz_question of quiz_section.quiz_questions){
-                quiz_question.question_options.sort((a: any, b: any) => {return a.option_id - b.option_id});
-            }
-        }
-        // const projects = await Models.Project.getProjects({include: [{model: Models.User, as: 'director'}, {model: Models.Quiz, include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question}]}]}]});
         response.status(200).json(newDetailedResponse(request.params, request.body, quiz, 'Project Active Quiz Fetched Successfully'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));

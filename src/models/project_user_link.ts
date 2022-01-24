@@ -17,6 +17,8 @@ export default (sequelize: Sequelize.Sequelize) => {
         },
     }, {
         sequelize,
+        charset: 'utf8',
+        collate: 'utf8_unicode_ci',
         modelName: 'project_user_link'});
     return Model 
 }
