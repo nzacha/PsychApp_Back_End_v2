@@ -47,7 +47,7 @@ export async function authenticateParticipant(request: express.Request, response
         if(!code){
             return response.status(200).json(newErrorResponse('Missing information on participant login'))
         }
-        let participant = await Models.Project_Participant.findOne({where: {authentication_code: code}, exclude: ['token']});
+        let participant = await Models.Project_Participant.findOne({where: {authentication_code: code}, attributes: {exclude: ['token']}});
         if(!participant){
             return response.status(200).json(newErrorResponse('Participant not found'));    
         }
