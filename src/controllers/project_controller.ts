@@ -67,13 +67,13 @@ export async function fetchActiveQuiz(request: express.Request, response: expres
 
 export async function createProject(request: express.Request, response: express.Response){
     try{
-        const {name, director_id} = request.body;
+        const {name, director_id, download_link} = request.body;
         if(!name || !director_id){
             response.status(404).json(newErrorResponse(ERROR_OCCURRED));
             return;
         }
         
-        const project = await Models.Project.create({name: name, director_id: director_id});
+        const project = await Models.Project.create({name: name, director_id: director_id, download_link: download_link});
         if(!project){
             response.status(404).json(newErrorResponse('Error While Creating Project'));
             return;
