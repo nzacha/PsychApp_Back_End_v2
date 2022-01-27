@@ -47,7 +47,11 @@ export default (sequelize: Sequelize.Sequelize) => {
         automatic_termination: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
-        }
+        },
+        download_link: {
+            type: Sequelize.STRING,
+            defaultValue: ''
+        },
     }, {
         sequelize,
         charset: 'utf8',

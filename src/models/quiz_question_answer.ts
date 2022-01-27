@@ -17,7 +17,7 @@ export default (sequelize: Sequelize.Sequelize) => {
             defaultValue: 1
         },
         date:{
-            type: Sequelize.DATE,
+            type: Sequelize.STRING,
         },
         question_id:{
             type: Sequelize.INTEGER,
