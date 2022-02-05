@@ -33,7 +33,6 @@ export default (sequelize: Sequelize.Sequelize) => {
         },
         deactivation_reason:{
             type: Sequelize.STRING,
-            defaultValue: ''
         },
     }, {
         sequelize,

@@ -84,11 +84,9 @@ export async function deactivateParticipant(request: express.Request, response: 
     try{
         const {id} = request.params;
         const {value, reasoning} = request.body;
-        if(!id || !value){
+        if(!id || value == undefined){
             return response.status(200).json(newErrorResponse('Missing information on participant deactivate'))
         }
-        console.log(value);
-        console.log(reasoning);
         let participant = await Models.Project_Participant.findOne({where: {participant_id: id}});
         if(!participant){
             return response.status(200).json(newErrorResponse('Participant not found'));    
