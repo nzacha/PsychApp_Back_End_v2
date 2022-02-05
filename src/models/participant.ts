@@ -30,7 +30,11 @@ export default (sequelize: Sequelize.Sequelize) => {
         is_active: {
             type: Sequelize.BOOLEAN,
             defaultValue: true
-        }
+        },
+        deactivation_reason:{
+            type: Sequelize.STRING,
+            defaultValue: ''
+        },
     }, {
         sequelize,
         charset: 'utf8',

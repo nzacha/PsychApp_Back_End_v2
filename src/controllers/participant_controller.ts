@@ -79,3 +79,24 @@ export async function updateParticipant(request: express.Request, response: expr
         response.status(400).json(newErrorResponse(error));
     }
 }
+
+export async function deactivateParticipant(request: express.Request, response: express.Response){
+    try{
+        const {id} = request.params;
+        const {value, reasoning} = request.body;
+        if(!id || !value){
+            return response.status(200).json(newErrorResponse('Missing information on participant deactivate'))
+        }
+        console.log(value);
+        console.log(reasoning);
+        let participant = await Models.Project_Participant.findOne({where: {participant_id: id}});
+        if(!participant){
+            return response.status(200).json(newErrorResponse('Participant not found'));    
+        }
+        await participant.update({is_active: value, deactivation_reason: value ? '' : reasoning || ''});
+        participant = await Models.Project_Participant.findOne({where: {participant_id: id}, include: Models.Project});
+        response.status(200).json(newResponse(participant, 'Participant Updated Successfully'));
+    }catch(error: any){
+        response.status(400).json(newErrorResponse(error));
+    }
+}
