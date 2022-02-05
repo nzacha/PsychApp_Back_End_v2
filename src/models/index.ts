@@ -61,7 +61,7 @@ db.Project_Participant.belongsTo(db.Project, {foreignKey: 'project_id'})
 db.Quiz_Question.hasMany(db.Quiz_Question_Answer, {foreignKey: 'question_id'})
 
 db.Quiz_Question_Answer.belongsTo(db.Quiz_Question, {foreignKey: 'question_id'})
-db.Quiz_Question_Answer.belongsTo(db.Project_Participant, {foreignKey: 'participant_id'})
-db.Project_Participant.hasMany(db.Quiz_Question_Answer, {foreignKey: 'question_id', onDelete: 'cascade', hooks: true})
+db.Quiz_Question_Answer.belongsTo(db.Project_Participant, {foreignKey: 'participant_id', onDelete: 'cascade', hooks: true})
+db.Project_Participant.hasMany(db.Quiz_Question_Answer, {foreignKey: 'question_id'})
 
 export default db;
