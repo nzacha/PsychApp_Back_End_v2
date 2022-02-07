@@ -8,6 +8,7 @@ const sequelize = new Sequelize(connectionDetails.database, connectionDetails.us
   host: connectionDetails.host,
   port: connectionDetails.port
 })
+console.log(connectionDetails.host);
 
 db.sequelize = sequelize;
 

@@ -91,7 +91,7 @@ export async function deactivateParticipant(request: express.Request, response: 
         if(!participant){
             return response.status(200).json(newErrorResponse('Participant not found'));    
         }
-        await participant.update({is_active: value, deactivation_reason: value ? '' : reasoning || ''});
+        await participant.update({is_active: value, deactivation_reason: reasoning});
         participant = await Models.Project_Participant.findOne({where: {participant_id: id}, include: Models.Project});
         response.status(200).json(newResponse(participant, 'Participant Updated Successfully'));
     }catch(error: any){
