@@ -29,3 +29,28 @@ export async function getAnswersOfParticipant(request: express.Request, response
         response.status(400).json(newErrorResponse(error));
     }
 }
+
+export async function insertMultiple(request: express.Request, response: express.Response){
+    try{
+        const {code, questions} = request.body;
+        if(!code || !questions){
+            response.status(404).json(newErrorResponse(ERROR_OCCURRED));
+            return;
+        }
+        
+        const participant = await Models.Project_Participant.findOne({where: {authentication_code: code}}); 
+        if(!participant){
+            response.status(404).json(newErrorResponse(ERROR_OCCURRED));
+            return;
+        }
+
+        console.log(code);
+        console.log(questions);
+        const res = await Models.Quiz_Question_Answer.bulkCreate(questions);
+        console.log(res);
+        response.status(200).json(newResponse(res, 'Inserted Multiple Answers for User ' + code + ' Successfully'));
+    }catch(error: any){
+        console.log(error);
+        response.status(400).json(newErrorResponse(error));
+    }
+}

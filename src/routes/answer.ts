@@ -1,9 +1,10 @@
 import express from "express";
 import { verifyToken } from "../middleware/verifyToken";
-import { getAnswersOfParticipant } from "../controllers/answers_controller";
+import { getAnswersOfParticipant, insertMultiple } from "../controllers/answers_controller";
 
 const router = express.Router()
 
 router.get(`/list/:code`, verifyToken, getAnswersOfParticipant)
+router.put(`/multiple`, verifyToken, insertMultiple)
 
 export default router;
