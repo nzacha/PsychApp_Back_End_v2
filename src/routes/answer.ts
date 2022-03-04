@@ -5,6 +5,6 @@ import { getAnswersOfParticipant, insertMultiple } from "../controllers/answers_
 const router = express.Router()
 
 router.get(`/list/:code`, verifyToken, getAnswersOfParticipant)
-router.put(`/multiple`, verifyToken, insertMultiple)
+router.put(`/multiple`, insertMultiple)
 
 export default router;

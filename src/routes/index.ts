@@ -53,12 +53,12 @@ import quizSections from './quiz_sections';
 router.use(`/${ModelNamesEnum.Quiz_Section}`, verifyToken, quizSections);
 
 import participation from './participation';
-router.use(`/${ModelNamesEnum.Project_Participant}`, participation);
+router.use(`/${ModelNamesEnum.Project_Participant}`, verifyToken, participation);
 
 import project_user_link from './project_user_link';
 router.use(`/${ModelNamesEnum.Project_User_Link}`, verifyToken, project_user_link);
 
 import answers from './answer';
-router.use(`/${ModelNamesEnum.Quiz_Question_Answer}`, verifyToken, answers);
+router.use(`/${ModelNamesEnum.Quiz_Question_Answer}`, answers);
 
 export default router;
