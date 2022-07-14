@@ -1,8 +1,30 @@
 import Sequelize from 'sequelize'
+import { ModelEnum, TableNamesEnum } from '../config/models';
 
+export class User extends Sequelize.Model {
+    declare user_id: number;
+    declare email: string;
+    declare first_name: string;
+    declare last_name: string;
+    declare phone: string;
+    declare is_super_user: boolean;
+    declare is_verified: boolean;
+    declare is_active: boolean;
+    declare password_hash: string;
+    declare password_salt: string;
+    declare token: string
+    declare avatar_url: string;
+    
+    declare createdAt: Date;
+    declare updatedAt: Date;
+    
+    declare getProjects: Function;
+    declare getChatRooms: Function;
+    declare getChatMessages: Function;
+}
+    
 export default (sequelize: Sequelize.Sequelize) => {
-    class Model extends Sequelize.Model {}
-    Model.init({
+    User.init({
         user_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -11,7 +33,6 @@ export default (sequelize: Sequelize.Sequelize) => {
         email: {            
             type: Sequelize.STRING,
             defaultValue: '',
-            unique: true
         },
         first_name: {            
             type: Sequelize.STRING,
@@ -46,12 +67,20 @@ export default (sequelize: Sequelize.Sequelize) => {
         },
         token: {
             type: Sequelize.TEXT,
+        },
+        avatar_url: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
+        last_online: {
+            type: Sequelize.DATE,
+            allowNull: false,
         }
     }, {
         sequelize,
+        indexes: [{ unique: true, fields: ["email"] }],
         charset: 'utf8',
         collate: 'utf8_unicode_ci',
-        modelName: 'user',
-    });
-    return Model 
+        modelName: TableNamesEnum[ModelEnum.User]}); //'user'
+    return User 
 }

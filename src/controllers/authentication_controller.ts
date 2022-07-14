@@ -11,8 +11,8 @@ export async function authenticateUser(request: express.Request, response: expre
         if(!email || !password){
             return response.status(200).json(newErrorResponse('Missing information on user login'))
         }
-        let user = await Models.User.findOne({where: {email: email}});
-        if(!user){
+        let user = await Models.schema.User.findOne({where: {email: email}});
+        if(user == null){
             return response.status(200).json(newErrorResponse('Email not found'));    
         }
         
@@ -20,13 +20,15 @@ export async function authenticateUser(request: express.Request, response: expre
         if(hash != user.password_hash){
             return response.status(200).json(newErrorResponse('Password missmatch'));    
         }
-        user = await Models.User.findOne({where: {email: email}, attributes: {exclude: ['password_hash', 'password_salt', 'token']}});
-        var token = jwt.sign({user: user}, SECRET_KEY, {
-            expiresIn: "30m"
-        });
-        user = await user.update({token: token});
+        user = await Models.schema.User.findOne({where: {email: email}, attributes: {exclude: ['password_hash', 'password_salt', 'token']}});
+        if(user){
+            var token = jwt.sign({user: user}, SECRET_KEY, {
+                expiresIn: process.env.NODE_ENV == 'production' ? "2h" : "24h"
+            });
+            user = await user.update({token: token});
 
-        response.status(200).json(newResponse(user, 'Authentication Successful'));
+            response.status(200).json(newResponse(user, 'Authentication Successful'));
+        }
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));
     }
@@ -56,7 +58,7 @@ export async function registerUser(request: express.Request, response: express.R
             return response.status(400).json(newErrorResponse('Missing information on register user'))
         }
         const salt = crypto.randomBytes(16).toString('hex');
-        const user = await Models.User.create({...rest, email: email, password_hash: crypto.pbkdf2Sync(password, salt, 1000, 16, `sha512`).toString(`hex`), password_salt: salt});
+        const user = await Models.schema.User.create({...rest, email: email, password_hash: crypto.pbkdf2Sync(password, salt, 1000, 16, `sha512`).toString(`hex`), password_salt: salt});
         response.status(200).json(newResponse(user, 'Register Successful'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));

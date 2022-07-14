@@ -2,16 +2,15 @@ import { IActionMethod } from "./action_methods";
 import { ModelEnum, ModelNamesEnum } from "./models";
 import Models from '../models';
 import _ from "lodash";
-import { IQueryOptions } from "./auto_controller";
-import Sequelize from 'sequelize';
-import { HTTP_METHOD } from "./http_method";
+import Sequelize  from "sequelize";
 
 export interface ICustomRoute{
     path: string;
     model: ModelEnum;
     routes: Array<{
         action: IActionMethod.FETCH_ALL | IActionMethod.FETCH_ONE, 
-        options?: IQueryOptions
+        requireVerification: boolean,
+        options?: Sequelize.FindOptions,
     }>
 }
 const customRoutes: ICustomRoute[] = [];
@@ -21,30 +20,35 @@ var unset = true
  */
 export const getCustomRoutes= () => {
     if(unset){
-        customRoutes.push({path: `/${ModelNamesEnum.Project}`, model: ModelEnum.Project, routes: [
-            {action: IActionMethod.FETCH_ALL, options: {include: [{model: Models.User, as: 'director'}, {model: Models.Quiz, include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question}]}]}]}},
-            {action: IActionMethod.FETCH_ONE, options: {include: [{model: Models.User, as: 'director'}, {model: Models.Quiz, include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question}]}]}]}},
+        customRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Project]}`, model: ModelEnum.Project, routes: [
+            {action: IActionMethod.FETCH_ALL, requireVerification: true, options: {include: [{model: Models.schema.User, as: 'director'}, {model: Models.schema.Quiz, include: [{model: Models.schema.Quiz_Section, include: [{model: Models.schema.Quiz_Question}]}]}]}},
+            {action: IActionMethod.FETCH_ONE, requireVerification: true, options: {include: [{model: Models.schema.User, as: 'director'}, {model: Models.schema.Quiz, include: [{model: Models.schema.Quiz_Section, include: [{model: Models.schema.Quiz_Question}]}]}]}},
         ]})
         
-        customRoutes.push({path: `/${ModelNamesEnum.Quiz}`, model: ModelEnum.Quiz, routes: [
-            {action: IActionMethod.FETCH_ALL, options: {include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question, include: Models.Question_Option}]}]}},
-            {action: IActionMethod.FETCH_ONE, options: {include: [{model: Models.Quiz_Section, include: [{model: Models.Quiz_Question, include: Models.Question_Option, order: [[Models.Question_Option, 'question_option_id', 'ASC']]}], order: [[Models.Quiz_Question, 'question_id', 'ASC']]}]}},
+        customRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Quiz]}`, model: ModelEnum.Quiz, routes: [
+            {action: IActionMethod.FETCH_ALL, requireVerification: true, options: {include: [{model: Models.schema.Quiz_Section, include: [{model: Models.schema.Quiz_Question, include: [{model: Models.schema.Question_Option}]}]}]}},
+            {action: IActionMethod.FETCH_ONE, requireVerification: true, options: {include: [
+                {model: Models.schema.Quiz_Section, include: [
+                    {model: Models.schema.Quiz_Question, include: [
+                        {model: Models.schema.Question_Option, order: [[Models.schema.Question_Option, 'question_option_id', 'ASC']]}
+                    ]}
+                ], order: [[Models.schema.Quiz_Question, 'question_id', 'ASC']]}
+            ]}},
         ]})
         
-        customRoutes.push({path: `/${ModelNamesEnum.Quiz_Section}`, model: ModelEnum.Quiz_Section, routes: [
-            {action: IActionMethod.FETCH_ALL, options: {include: [{model: Models.Quiz_Question, include: Models.Question_Option}]}},
-            {action: IActionMethod.FETCH_ONE, options: {include: [{model: Models.Quiz_Question, include: Models.Question_Option}]}},
+        customRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Quiz_Section]}`, model: ModelEnum.Quiz_Section, routes: [
+            {action: IActionMethod.FETCH_ALL, requireVerification: true, options: {include: [{model: Models.schema.Quiz_Question, include: [{model: Models.schema.Question_Option}]}]}},
+            {action: IActionMethod.FETCH_ONE, requireVerification: true, options: {include: [{model: Models.schema.Quiz_Question, include: [{model: Models.schema.Question_Option}]}]}},
         ]})
         
-        customRoutes.push({path: `/${ModelNamesEnum.Quiz_Question}`, model: ModelEnum.Quiz_Question, routes: [
-            {action: IActionMethod.FETCH_ALL, options: {include: Models.Question_Option}},
-            {action: IActionMethod.FETCH_ONE, options: {include: Models.Question_Option}},
+        customRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Quiz_Question]}`, model: ModelEnum.Quiz_Question, routes: [
+            {action: IActionMethod.FETCH_ALL, requireVerification: true, options: {include: {model: Models.schema.Question_Option}}},
+            {action: IActionMethod.FETCH_ONE, requireVerification: true, options: {include: {model: Models.schema.Question_Option}}},
         ]})
         
-        
-        customRoutes.push({path: `/${ModelNamesEnum.User}`, model: ModelEnum.User, routes: [
-            {action: IActionMethod.FETCH_ALL, options: {attributes: {exclude: ['password_hash', 'password_salt', 'token']}}},
-            {action: IActionMethod.FETCH_ONE, options: {attributes: {exclude: ['password_hash', 'password_salt', 'token']}}},
+        customRoutes.push({path: `/${ModelNamesEnum[ModelEnum.User]}`, model: ModelEnum.User, routes: [
+            {action: IActionMethod.FETCH_ALL, requireVerification: true, options: {attributes: {exclude: ['password_hash', 'password_salt', 'token']}}},
+            {action: IActionMethod.FETCH_ONE, requireVerification: true, options: {attributes: {exclude: ['password_hash', 'password_salt', 'token']}}},
         ]})
         
         unset = true;

@@ -11,7 +11,8 @@ const createDelete = [IActionMethod.INSERT, IActionMethod.DELETE]
 const defaultRoutes: Array<{
     path: string,
     model: ModelEnum, 
-    actions: IActionMethod[]
+    actions: IActionMethod[],
+    requireVerification: boolean,
 }> = [];
 var unset = true;
 /*
@@ -20,22 +21,26 @@ var unset = true;
  */
 export const getDefaultRoutes = () => {
     if(unset){
-        //custom fetch routes defined
-        defaultRoutes.push({path: `/${ModelNamesEnum.Project}`, model: ModelEnum.Project, actions: [IActionMethod.UPDATE, IActionMethod.DELETE]});
-        defaultRoutes.push({path: `/${ModelNamesEnum.Quiz}`, model: ModelEnum.Quiz, actions: [IActionMethod.UPDATE, IActionMethod.DELETE]});
-        defaultRoutes.push({path: `/${ModelNamesEnum.Quiz_Section}`, model: ModelEnum.Quiz_Section, actions: manipulationMethods});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Alert]}`, model: ModelEnum.Alert, actions: [IActionMethod.FETCH_ALL, IActionMethod.UPDATE, IActionMethod.DELETE], requireVerification: true});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Chat_Room]}`, model: ModelEnum.Chat_Room, actions: [IActionMethod.UPDATE, IActionMethod.DELETE], requireVerification: true});
         
-        defaultRoutes.push({path: `/${ModelNamesEnum.Project_Participant}`, model: ModelEnum.Project_Participant, 
-            actions: [IActionMethod.FETCH_ALL, IActionMethod.FETCH_ONE, IActionMethod.DELETE]});
+        
+        //custom fetch routes defined
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Project]}`, model: ModelEnum.Project, actions: [IActionMethod.UPDATE, IActionMethod.DELETE], requireVerification: true});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Quiz]}`, model: ModelEnum.Quiz, actions: [IActionMethod.UPDATE, IActionMethod.DELETE], requireVerification: true});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Quiz_Section]}`, model: ModelEnum.Quiz_Section, actions: manipulationMethods, requireVerification: true});
+        
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Project_Participant]}`, model: ModelEnum.Project_Participant, 
+            actions: [IActionMethod.FETCH_ALL, IActionMethod.FETCH_ONE, IActionMethod.DELETE], requireVerification: true});
 
         //no custom routes defined
-        defaultRoutes.push({path: `/${ModelNamesEnum.User}`, model: ModelEnum.User, actions: [IActionMethod.DELETE]});
-        defaultRoutes.push({path: `/${ModelNamesEnum.Quiz_Question}`, model: ModelEnum.Quiz_Question, actions: manipulationMethods});
-        defaultRoutes.push({path: `/${ModelNamesEnum.Question_Option}`, model: ModelEnum.Question_Option, actions: allMethods});
-        defaultRoutes.push({path: `/${ModelNamesEnum.Quiz_Question_Answer}`, model: ModelEnum.Quiz_Question_Answer, actions: allMethods});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.User]}`, model: ModelEnum.User, actions: [IActionMethod.DELETE], requireVerification: true});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Quiz_Question]}`, model: ModelEnum.Quiz_Question, actions: manipulationMethods, requireVerification: true});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Question_Option]}`, model: ModelEnum.Question_Option, actions: allMethods, requireVerification: true});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Quiz_Question_Answer]}`, model: ModelEnum.Quiz_Question_Answer, actions: allMethods, requireVerification: true});
         
         //create - delete only
-        defaultRoutes.push({path: `/${ModelNamesEnum.Project_User_Link}`, model: ModelEnum.Project_User_Link, actions: allMethods});
+        defaultRoutes.push({path: `/${ModelNamesEnum[ModelEnum.Project_User_Link]}`, model: ModelEnum.Project_User_Link, actions: allMethods, requireVerification: true});
         unset=false;
     }
     return defaultRoutes;

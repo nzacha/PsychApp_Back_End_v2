@@ -11,17 +11,17 @@ export async function getAnswersOfParticipant(request: express.Request, response
             return;
         }
         
-        const participant = await Models.Project_Participant.findOne({where: {authentication_code: code}}); 
+        const participant = await Models.schema.Project_Participant.findOne({where: {authentication_code: code}}); 
         if(!participant){
             response.status(404).json(newErrorResponse(ERROR_OCCURRED));
             return;
         }
 
-        const res = await Models.Quiz_Question_Answer.findAll({
+        const res = await Models.schema.Quiz_Question_Answer.findAll({
             where: {
                 participant_id: participant.participant_id
             },
-            include: [{model: Models.Quiz_Question}, {model: Models.Project_Participant}]
+            include: [{model: Models.schema.Quiz_Question}, {model: Models.schema.Project_Participant}]
         });
         response.status(200).json(newResponse(res, 'Answers of Participant Fetched Successfully'));
     }catch(error: any){
@@ -38,7 +38,7 @@ export async function insertMultiple(request: express.Request, response: express
             return;
         }
         
-        const participant = await Models.Project_Participant.findOne({where: {authentication_code: code}}); 
+        const participant = await Models.schema.Project_Participant.findOne({where: {authentication_code: code}}); 
         if(!participant){
             response.status(404).json(newErrorResponse(ERROR_OCCURRED));
             return;
@@ -46,7 +46,7 @@ export async function insertMultiple(request: express.Request, response: express
 
         console.log(code);
         console.log(questions);
-        const res = await Models.Quiz_Question_Answer.bulkCreate(questions);
+        const res = await Models.schema.Quiz_Question_Answer.bulkCreate(questions);
         console.log(res);
         response.status(200).json(newResponse(res, 'Inserted Multiple Answers for User ' + code + ' Successfully'));
     }catch(error: any){

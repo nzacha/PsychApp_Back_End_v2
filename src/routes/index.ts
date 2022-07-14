@@ -1,6 +1,6 @@
 import express from 'express';
 import { getDefaultRoutes } from '../config/default_routes';
-import { ModelNamesEnum } from '../config/models';
+import { ModelEnum, ModelNamesEnum, TableNamesEnum } from '../config/models';
 import { getCustomRoutes } from '../config/custom_routes';
 import { createCustomRoute, createDefaultRoute } from '../config/auto_router';
 import _ from 'lodash';
@@ -13,7 +13,7 @@ const defaultRoutes = getDefaultRoutes();
 for(let route of defaultRoutes){
     console.log(`Auto-Routing ${route.model} with Default Controller:`)
     route.actions.forEach(action =>   {
-        createDefaultRoute(router, route.path, route.model, action);
+        createDefaultRoute(router, route.path, route.model, action, route.requireVerification);
     })
     console.log();
 }
@@ -23,7 +23,7 @@ const customRoutes = getCustomRoutes();
 for (let route of customRoutes) {
     console.log(`Auto-Routing ${route.model} with Custom Controller:`)
     for (let controller of route.routes) {
-        createDefaultRoute(router, route.path, route.model, controller.action, controller.options);
+        createDefaultRoute(router, route.path, route.model, controller.action, controller.requireVerification, controller.options);
     };
     console.log();
 };
@@ -41,24 +41,33 @@ router.use('/auth', authentication);
 
 import { verifyToken } from '../middleware/verifyToken';
 import users from './users';
-router.use(`/${ModelNamesEnum.User}`, users);
+router.use(`/${TableNamesEnum[ModelEnum.User]}`, users);
 
 import projects from './projects';
-router.use(`/${ModelNamesEnum.Project}`, verifyToken, projects);
+router.use(`/${TableNamesEnum[ModelEnum.Project]}`, verifyToken, projects);
 
 import quizzes from './quizzes';
-router.use(`/${ModelNamesEnum.Quiz}`, verifyToken, quizzes);
+router.use(`/${TableNamesEnum[ModelEnum.Quiz]}`, verifyToken, quizzes);
 
 import quizSections from './quiz_sections';
-router.use(`/${ModelNamesEnum.Quiz_Section}`, verifyToken, quizSections);
+router.use(`/${TableNamesEnum[ModelEnum.Quiz_Section]}`, verifyToken, quizSections);
 
 import participation from './participation';
-router.use(`/${ModelNamesEnum.Project_Participant}`, verifyToken, participation);
+router.use(`/${TableNamesEnum[ModelEnum.Project_Participant]}`, verifyToken, participation);
 
 import project_user_link from './project_user_link';
-router.use(`/${ModelNamesEnum.Project_User_Link}`, verifyToken, project_user_link);
+router.use(`/${TableNamesEnum[ModelEnum.Project_User_Link]}`, verifyToken, project_user_link);
 
 import answers from './answer';
-router.use(`/${ModelNamesEnum.Quiz_Question_Answer}`, answers);
+router.use(`/${TableNamesEnum[ModelEnum.Quiz_Question_Answer]}`, answers);
+
+import alerts from './alerts';
+router.use(`/${TableNamesEnum[ModelEnum.Alert]}`, verifyToken, alerts);
+
+import chat_room from './chat_room';
+router.use(`/${TableNamesEnum[ModelEnum.Chat_Room]}`, verifyToken, chat_room);
+
+import services from './services';
+router.use(`/services`, verifyToken, services);
 
 export default router;

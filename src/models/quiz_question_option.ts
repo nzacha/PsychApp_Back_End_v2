@@ -1,8 +1,16 @@
 import Sequelize from 'sequelize';
+import { ModelEnum, TableNamesEnum } from '../config/models';
 
+export class Question_Option extends Sequelize.Model {
+    declare question_option_id: number;
+    declare option: string;
+    declare question_id: number;
+    
+    declare createdAt: Date;
+    declare updatedAt: Date;
+}
 export default (sequelize: Sequelize.Sequelize) => {
-    class Model extends Sequelize.Model {}
-    Model.init({
+    Question_Option.init({
         question_option_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -18,6 +26,6 @@ export default (sequelize: Sequelize.Sequelize) => {
         sequelize,
         charset: 'utf8',
         collate: 'utf8_unicode_ci',
-        modelName: 'question_option'});
-    return Model 
+        modelName: TableNamesEnum[ModelEnum.Question_Option]}); //'question_option'
+    return Question_Option 
 }

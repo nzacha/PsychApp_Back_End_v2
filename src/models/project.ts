@@ -1,9 +1,23 @@
 import Sequelize from 'sequelize'
-import Models from '.';
+import { ModelEnum, TableNamesEnum } from '../config/models';
 
+export class Project extends Sequelize.Model {
+    declare project_id: number;
+    declare name: string;
+    declare description: string;
+    declare director_id: number;
+    declare active_quiz_id: number;
+    declare study_length: number;
+    declare tests_per_day: number;
+    declare tests_time_interval: number;
+    declare allow_individual_times: boolean;
+    declare allow_user_termination: boolean;
+    declare download_link: string;
+    
+    declare getUsers: Function;
+}
 export default (sequelize: Sequelize.Sequelize) => {
-    class Model extends Sequelize.Model {}
-    Model.init({
+    Project.init({
         project_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -56,7 +70,7 @@ export default (sequelize: Sequelize.Sequelize) => {
         sequelize,
         charset: 'utf8',
         collate: 'utf8_unicode_ci',
-        modelName: 'project'});
-    return Model 
+        modelName: TableNamesEnum[ModelEnum.Project]}); //'project'
+    return Project 
 }
 

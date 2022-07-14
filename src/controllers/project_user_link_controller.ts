@@ -16,14 +16,14 @@ export async function updateAllProjectLinks(request: express.Request, response: 
         }
         
         //destroy project links of given project id
-        await Models.Project_User_Link.destroy({
+        await Models.schema.Project_User_Link.destroy({
             where: {
               project_id: project_id
             }
         });
 
         //bulk create links from body
-        const result = await Models.Project_User_Link.bulkCreate(new_projects);
+        const result = await Models.schema.Project_User_Link.bulkCreate(new_projects);
         response.status(200).json(newDetailedResponse(request.params, request.body, result, 'Projects Linked Successfully'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));

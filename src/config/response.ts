@@ -32,3 +32,5 @@ export function newResponse(data: any, message: string): IResponse{
 }
 
 export const ERROR_OCCURRED = 'An Error Occurred';
+export const MISSIN_INPUTS = 'Missing Inputs';
+export const INPUTS_MISSMATCH = 'Inputs Missmatch';

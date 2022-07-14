@@ -3,7 +3,6 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import db from './src/models/db_config';
 import models from './src/models';
-import crypto from 'crypto';
 
 export const SECRET_KEY = process.env.SECRET_KEY || 'secret_key'; 
 export const FORCE_DB_SYNC = process.env.SYNC_FORCE_DB === 'true'; 
@@ -13,13 +12,14 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/images', express.static('images'));
+app.use('/static', express.static('static'));
 
 app.get('/', function (req: express.Request, res: express.Response) {
     res.json({ message: 'Hello' });
 });
 
 import routes from './src/routes';
+import { ChatServer } from './ChatServer';
 app.use(routes);
 
 //use force to truncate tables
@@ -34,7 +34,7 @@ async function configureDB(force: boolean, alter: boolean){
     //if tables were truncated add static items
 }
 
-const port = process.env.API_PORT
+const api_port = process.env.API_PORT;
 db.connect(async (err) => {
     if (err) {
         console.log('Failed to open a SQL Database connection.', err.stack);
@@ -43,8 +43,11 @@ db.connect(async (err) => {
         await configureDB(FORCE_DB_SYNC, ALTER_DB_SYNC);
         console.log(FORCE_DB_SYNC, ALTER_DB_SYNC);
         
-        app.listen(port, () => {
-            console.log(`App is listening at http://localhost:${port}`);
+        app.listen(api_port, () => {
+            console.log(`App is listening at http://localhost:${api_port}`);
         });
     }
 });
+
+const chat_port = process.env.CHAT_PORT || '5051';
+const chatServer = new ChatServer(chat_port);

@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize'
+import { ModelEnum, ModelNamesEnum } from '../config/models';
 
 export default (sequelize: Sequelize.Sequelize) => {
     class Model extends Sequelize.Model {}

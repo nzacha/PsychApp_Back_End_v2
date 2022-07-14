@@ -14,7 +14,7 @@ export async function getParticipationsOfProject(request: express.Request, respo
             return;
         }
         
-        const res = await Models.Project_Participant.findAll({where: {
+        const res = await Models.schema.Project_Participant.findAll({where: {
             project_id: project_id,
         }});
         response.status(200).json(newResponse(res, 'Participants Fetched Successfully'));
@@ -34,7 +34,7 @@ export async function createParticipation(request: express.Request, response: ex
         console.log(authCode);
         const data = {...request.body, authentication_code: authCode, project_id: project_id};
         
-        const res = await Models.Project_Participant.create(data);
+        const res = await Models.schema.Project_Participant.create(data);
         response.status(200).json(newResponse(res, 'Participant Created Successfully'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));
@@ -47,7 +47,7 @@ export async function authenticateParticipant(request: express.Request, response
         if(!code){
             return response.status(200).json(newErrorResponse('Missing information on participant login'))
         }
-        let participant = await Models.Project_Participant.findOne({where: {authentication_code: code}, attributes: {exclude: ['token']}});
+        let participant = await Models.schema.Project_Participant.findOne({where: {authentication_code: code}, attributes: {exclude: ['token']}});
         if(!participant){
             return response.status(200).json(newErrorResponse('Participant not found'));    
         }
@@ -55,7 +55,7 @@ export async function authenticateParticipant(request: express.Request, response
             // expiresIn: "30m"
         });
         await participant.update({token: token});
-        participant = await Models.Project_Participant.findOne({where: {participant_id: participant.participant_id}, include: Models.Project});
+        participant = await Models.schema.Project_Participant.findOne({where: {participant_id: participant.participant_id}, include: Models.schema.Project});
         response.status(200).json(newResponse(participant, 'Authentication Successful'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));
@@ -68,12 +68,12 @@ export async function updateParticipant(request: express.Request, response: expr
         if(!id){
             return response.status(200).json(newErrorResponse('Missing information on participant update'))
         }
-        let participant = await Models.Project_Participant.findOne({where: {participant_id: id}});
+        let participant = await Models.schema.Project_Participant.findOne({where: {participant_id: id}});
         if(!participant){
             return response.status(200).json(newErrorResponse('Participant not found'));    
         }
         await participant.update({...request.body});
-        participant = await Models.Project_Participant.findOne({where: {participant_id: id}, include: Models.Project});
+        participant = await Models.schema.Project_Participant.findOne({where: {participant_id: id}, include: Models.schema.Project});
         response.status(200).json(newResponse(participant, 'Participant Updated Successfully'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));
@@ -87,12 +87,12 @@ export async function deactivateParticipant(request: express.Request, response: 
         if(!id || value == undefined){
             return response.status(200).json(newErrorResponse('Missing information on participant deactivate'))
         }
-        let participant = await Models.Project_Participant.findOne({where: {participant_id: id}});
+        let participant = await Models.schema.Project_Participant.findOne({where: {participant_id: id}});
         if(!participant){
             return response.status(200).json(newErrorResponse('Participant not found'));    
         }
         await participant.update({is_active: value, deactivation_reason: reasoning});
-        participant = await Models.Project_Participant.findOne({where: {participant_id: id}, include: Models.Project});
+        participant = await Models.schema.Project_Participant.findOne({where: {participant_id: id}, include: Models.schema.Project});
         response.status(200).json(newResponse(participant, 'Participant Updated Successfully'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));

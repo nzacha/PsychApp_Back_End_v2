@@ -2,28 +2,49 @@ import express, { Router } from "express";
 import { IActionMethod } from "./action_methods";
 import { ModelEnum } from "./models";
 import _ from "lodash";
-import { createDefaultController, IQueryOptions } from "./auto_controller";
+import { createDefaultController } from "./auto_controller";
 import { HTTP_METHOD } from "./http_method";
 import { verifyToken } from "../middleware/verifyToken";
+import Sequelize, { Model } from 'sequelize';
 
-export const createDefaultRoute = (router: Router, path: string, model: ModelEnum, action: IActionMethod, options?: IQueryOptions)=>{
+export const createDefaultRoute = (router: Router, path: string, model: ModelEnum, action: IActionMethod, requireVerification: boolean = true, options?: Sequelize.FindOptions)=>{
     const _path = path.toLowerCase();
     console.log(`\t> Routing Model: [${model}] and Action: [${IActionMethod[action]}] at ${_path} ${options ? 'with options' : ''}`)
     switch(action){
         case IActionMethod.FETCH_ALL:
-            router.get(_path, verifyToken, createDefaultController(model, action, options));
+            if(requireVerification){
+                router.get(_path, verifyToken, createDefaultController(model, action, options));
+            }else{
+                router.get(_path, createDefaultController(model, action, options));
+            }
             break;
         case IActionMethod.FETCH_ONE:
-            router.get(_path + '/:id', verifyToken, createDefaultController(model, action, options));
+            if(requireVerification){
+                router.get(_path + '/:id', verifyToken, createDefaultController(model, action, options));
+            }else{
+                router.get(_path + '/:id', createDefaultController(model, action, options));
+            }
             break;
         case IActionMethod.INSERT:
-            router.put(_path, verifyToken, createDefaultController(model, action, options));
+            if(requireVerification){
+                router.put(_path, verifyToken, createDefaultController(model, action, options));
+            }else{
+                router.put(_path, createDefaultController(model, action, options));
+            }
             break;
         case IActionMethod.UPDATE:
-            router.patch(_path + '/:id', verifyToken, createDefaultController(model, action, options));
+            if(requireVerification){
+                router.patch(_path + '/:id', verifyToken, createDefaultController(model, action, options));
+            }else{
+                router.patch(_path + '/:id', createDefaultController(model, action, options));
+            }
             break;
         case IActionMethod.DELETE:
-            router.delete(_path + '/:id', verifyToken, createDefaultController(model, action, options));
+            if(requireVerification){
+                router.delete(_path + '/:id', verifyToken, createDefaultController(model, action, options));
+            }else{
+                router.delete(_path + '/:id', createDefaultController(model, action, options));
+            }
             break;
     }
 }

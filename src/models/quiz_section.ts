@@ -1,8 +1,17 @@
 import Sequelize from 'sequelize'
+import { ModelEnum, TableNamesEnum } from '../config/models';
 
+export class Quiz_Section extends Sequelize.Model {
+    declare section_id: number;
+    declare name: string;
+    declare description: string;
+    declare quiz_id: number;
+    
+    declare createdAt: Date;
+    declare updatedAt: Date;
+}
 export default (sequelize: Sequelize.Sequelize) => {
-    class Model extends Sequelize.Model {}
-    Model.init({
+    Quiz_Section.init({
         section_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -25,7 +34,7 @@ export default (sequelize: Sequelize.Sequelize) => {
         sequelize,
         charset: 'utf8',
         collate: 'utf8_unicode_ci',
-        modelName: 'quiz_section'});
-    return Model 
+        modelName: TableNamesEnum[ModelEnum.Quiz_Section]}); //'quiz_section'
+    return Quiz_Section 
 }
 

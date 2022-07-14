@@ -1,16 +1,16 @@
 import Sequelize from 'sequelize'
 import { ModelEnum, TableNamesEnum } from '../config/models';
 
-export class Project_User_Link extends Sequelize.Model {
-    declare project_id: number;
+export class Chat_Room_User_Link extends Sequelize.Model {
+    declare chat_room_id: number;
     declare user_id: number;
     
     declare createdAt: Date;
     declare updatedAt: Date;
 }
 export default (sequelize: Sequelize.Sequelize) => {
-    Project_User_Link.init({
-        project_id: {
+    Chat_Room_User_Link.init({
+        chat_room_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
         },
@@ -18,15 +18,11 @@ export default (sequelize: Sequelize.Sequelize) => {
             type: Sequelize.INTEGER,
             primaryKey: true,    
         },
-        can_edit: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
-        },
     }, {
         sequelize,
         charset: 'utf8',
         collate: 'utf8_unicode_ci',
-        modelName: TableNamesEnum[ModelEnum.Project_User_Link]}); //'project_user_link'
-    return Project_User_Link 
+        modelName: TableNamesEnum[ModelEnum.Chat_Room_User_Link]}); //'chat_room_user_link'
+    return Chat_Room_User_Link 
 }
 
