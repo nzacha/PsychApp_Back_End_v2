@@ -41,31 +41,31 @@ router.use('/auth', authentication);
 
 import { verifyToken } from '../middleware/verifyToken';
 import users from './users';
-router.use(`/${TableNamesEnum[ModelEnum.User]}`, users);
+router.use(`/${ModelNamesEnum[ModelEnum.User]}`, users);
 
 import projects from './projects';
-router.use(`/${TableNamesEnum[ModelEnum.Project]}`, verifyToken, projects);
+router.use(`/${ModelNamesEnum[ModelEnum.Project]}`, verifyToken, projects);
 
 import quizzes from './quizzes';
-router.use(`/${TableNamesEnum[ModelEnum.Quiz]}`, verifyToken, quizzes);
+router.use(`/${ModelNamesEnum[ModelEnum.Quiz]}`, verifyToken, quizzes);
 
 import quizSections from './quiz_sections';
-router.use(`/${TableNamesEnum[ModelEnum.Quiz_Section]}`, verifyToken, quizSections);
+router.use(`/${ModelNamesEnum[ModelEnum.Quiz_Section]}`, verifyToken, quizSections);
 
 import participation from './participation';
-router.use(`/${TableNamesEnum[ModelEnum.Project_Participant]}`, verifyToken, participation);
+router.use(`/${ModelNamesEnum[ModelEnum.Project_Participant]}`, verifyToken, participation);
 
 import project_user_link from './project_user_link';
-router.use(`/${TableNamesEnum[ModelEnum.Project_User_Link]}`, verifyToken, project_user_link);
+router.use(`/${ModelNamesEnum[ModelEnum.Project_User_Link]}`, verifyToken, project_user_link);
 
 import answers from './answer';
-router.use(`/${TableNamesEnum[ModelEnum.Quiz_Question_Answer]}`, answers);
+router.use(`/${ModelNamesEnum[ModelEnum.Quiz_Question_Answer]}`, answers);
 
 import alerts from './alerts';
-router.use(`/${TableNamesEnum[ModelEnum.Alert]}`, verifyToken, alerts);
+router.use(`/${ModelNamesEnum[ModelEnum.Alert]}`, verifyToken, alerts);
 
 import chat_room from './chat_room';
-router.use(`/${TableNamesEnum[ModelEnum.Chat_Room]}`, verifyToken, chat_room);
+router.use(`/${ModelNamesEnum[ModelEnum.Chat_Room]}`, verifyToken, chat_room);
 
 import services from './services';
 router.use(`/services`, verifyToken, services);
