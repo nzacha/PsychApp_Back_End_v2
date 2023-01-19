@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { IActionMethod } from "./action_methods";
-import { ModelEnum } from "./models";
+import { ModelEnum, ModelNamesEnum } from "./models";
 import _ from "lodash";
 import { createDefaultController } from "./auto_controller";
 import { HTTP_METHOD } from "./http_method";
@@ -9,7 +9,7 @@ import Sequelize, { Model } from 'sequelize';
 
 export const createDefaultRoute = (router: Router, path: string, model: ModelEnum, action: IActionMethod, requireVerification: boolean = true, options?: Sequelize.FindOptions)=>{
     const _path = path.toLowerCase();
-    console.log(`\t> Routing Model: [${model}] and Action: [${IActionMethod[action]}] at ${_path} ${options ? 'with options' : ''}`)
+    console.log(`\t> Routing Model: [${ModelNamesEnum[model]}] and Action: [${IActionMethod[action]}] at ${_path} ${options ? 'with options' : ''}`)
     switch(action){
         case IActionMethod.FETCH_ALL:
             if(requireVerification){

@@ -24,7 +24,7 @@ export const ModelNamesEnum = {
     [ModelEnum.Quiz_Section]: 'section',
     [ModelEnum.Quiz_Question]: 'question',
     [ModelEnum.Quiz_Question_Answer]: 'answer',
-    [ModelEnum.Question_Option]: 'option',
+    [ModelEnum.Question_Option]: 'question_option',
     [ModelEnum.Project_User_Link]: 'project_user_link',
     [ModelEnum.Alert]: 'alert',
     [ModelEnum.Chat_Room]: 'room',

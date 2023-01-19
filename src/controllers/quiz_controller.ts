@@ -10,7 +10,19 @@ export async function listQuizzesByProject(request: express.Request, response: e
             return;
         }
 
-        const quizzes = await Models.schema.Quiz.findAll({where: {project_id: project_id}, include: [{model: Models.schema.Quiz_Section, include: [{model: Models.schema.Quiz_Question, include: [{model: Models.schema.Question_Option, order: [[Models.schema.Question_Option, 'question_option_id', 'ASC']]}]}], order: [[Models.schema.Quiz_Question, 'question_id', 'ASC']]}]});
+        const quizzes = await Models.schema.Quiz.findAll({
+            where: {project_id: project_id}, 
+            include: [{
+                model: Models.schema.Quiz_Section, 
+                include: [{
+                    model: Models.schema.Quiz_Question, 
+                    include: [{
+                        model: Models.schema.Question_Option, 
+                        order: [[Models.schema.Question_Option, 'question_option_id', 'DESC']]}]
+                }], 
+                order: [[Models.schema.Quiz_Question, 'question_id', 'ASC']]
+            }]
+        });
         response.status(200).json(newDetailedResponse(request.params, request.body, quizzes, 'Quizzes Fetched Successfully'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));

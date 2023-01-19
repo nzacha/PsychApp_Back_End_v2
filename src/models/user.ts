@@ -74,7 +74,7 @@ export default (sequelize: Sequelize.Sequelize) => {
         },
         last_online: {
             type: Sequelize.DATE,
-            allowNull: false,
+            allowNull: true,
         }
     }, {
         sequelize,

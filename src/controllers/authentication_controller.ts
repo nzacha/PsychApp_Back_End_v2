@@ -58,7 +58,13 @@ export async function registerUser(request: express.Request, response: express.R
             return response.status(400).json(newErrorResponse('Missing information on register user'))
         }
         const salt = crypto.randomBytes(16).toString('hex');
-        const user = await Models.schema.User.create({...rest, email: email, password_hash: crypto.pbkdf2Sync(password, salt, 1000, 16, `sha512`).toString(`hex`), password_salt: salt});
+        const user = await Models.schema.User.create({
+            ...rest, 
+            email: email, 
+            password_hash: crypto.pbkdf2Sync(password, salt, 1000, 16, `sha512`).toString(`hex`), 
+            password_salt: salt,
+            last_online: null
+        });
         response.status(200).json(newResponse(user, 'Register Successful'));
     }catch(error: any){
         response.status(400).json(newErrorResponse(error));
